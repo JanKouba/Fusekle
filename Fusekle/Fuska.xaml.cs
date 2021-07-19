@@ -15,12 +15,15 @@ namespace Fusekle
 
         public bool Engaged { get => engaged; set => engaged = value; }
         public bool PreEngaged { get => preEngaged; set => preEngaged = value; }
-       
-        public Rect rect;
-        bool _isRectDragInProg = false;
-        Canvas MyCanvas;
+        public Rect Rect { get => rect; }
+
+        private Rect rect;
+      
+        private Canvas myCanvas;
 
         private Misto engagedMisto;
+
+        private bool _isRectDragInProg = false;
 
         public Fuska(Canvas canvas, double startX, double startY, string name)
         {
@@ -31,7 +34,7 @@ namespace Fusekle
             Canvas.SetTop(this, startY);
             Canvas.SetLeft(this, startX);
 
-            MyCanvas = canvas;
+            myCanvas = canvas;
             Name = name;
 
             rect = new Rect(startX, startY, 20, 20);
@@ -50,13 +53,13 @@ namespace Fusekle
            this.Opacity = 1;
             _isRectDragInProg = false;
             this.ReleaseMouseCapture();
+
             if (preEngaged)
             {
                 engaged = true;
                 engagedMisto.Engaged = true;
                 Canvas.SetLeft(this, engagedMisto.rect.Left);
                 Canvas.SetTop(this, engagedMisto.rect.Top);
-
             }
         }
 
@@ -76,12 +79,12 @@ namespace Fusekle
 
                 rect = new Rect(X, Y, 20, 20);
 
-                var mista = this.MyCanvas.Children.OfType<Misto>();
+                var mista = this.myCanvas.Children.OfType<Misto>();
 
                 foreach (var misto in mista)
                 {
                     if (!misto.Engaged)
-                        if (rect.IntersectsWith(misto.rect))
+                        if (Rect.IntersectsWith(misto.rect))
                         {
                             misto.HighLight();
                             preEngaged = true;
@@ -101,7 +104,7 @@ namespace Fusekle
         {
             if (!this.Engaged && _isRectDragInProg)
             {
-                var mousePos = e.GetPosition(MyCanvas);
+                var mousePos = e.GetPosition(myCanvas);
                 Moving(mousePos.X, mousePos.Y);
             }
         }
