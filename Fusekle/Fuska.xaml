@@ -10,13 +10,48 @@
              MouseLeftButtonUp="gridMain_MouseLeftButtonUp"
              MouseLeave="gridMain_MouseLeave"
              >
+
+    <UserControl.Resources>
+        <Style x:Key="Black" TargetType="Path">
+            <Setter Property="Fill" Value="Black"/>
+        </Style>
+        <Style x:Key="White" TargetType="Path">
+            <Setter Property="Fill" Value="White"/>
+        </Style>
+        <Style x:Key="OrangeRed" TargetType="Path">
+            <Setter Property="Fill" Value="OrangeRed"/>
+        </Style>
+        <Style x:Key="DarkGray" TargetType="Path">
+            <Setter Property="Fill" Value="DarkGray"/>
+        </Style>
+        <Style x:Key="Goldenrod" TargetType="Path">
+            <Setter Property="Fill" Value="Goldenrod"/>
+        </Style>
+        <Style x:Key="Brown" TargetType="Path">
+            <Setter Property="Fill" Value="Brown"/>
+        </Style>
+        <Style x:Key="Teal" TargetType="Path">
+            <Setter Property="Fill" Value="Teal"/>
+        </Style>
+        <Style x:Key="BlueViolet" TargetType="Path">
+            <Setter Property="Fill" Value="BlueViolet"/>
+        </Style>
+        <Style x:Key="Olive" TargetType="Path">
+            <Setter Property="Fill" Value="Olive"/>
+        </Style>
+        <Style x:Key="DeepSkyBlue" TargetType="Path">
+            <Setter Property="Fill" Value="LightSkyBlue"/>
+        </Style>
+    </UserControl.Resources>
+    
+    
     <Grid x:Name="gridMain" >
         <!--
         <Image Source="fusekle_modra.png"/>
         -->
         
         
-        <Path Stroke="DarkBlue" 
+        <Path  x:Name="fuskaBody" Stroke="Black"
               StrokeThickness="1"
               Data="M 0, 0 
               L 0, 60 
@@ -24,45 +59,34 @@
               C 80, 90  20, 50  22, 50
               L 22, 0
               L 0, 0
-             " 
-              Fill="DarkBlue"
+              "  
             />
 
-        <Path Stroke="LightGray" 
-              StrokeThickness="2.5"
+        <Path x:Name="stripe1" Stroke="Black" 
+              StrokeThickness="1"
               Data="M 0, 5 
               L 22, 5
+              L 22, 10
+              L 0, 10
               " 
               />
 
-        <Path Stroke="LightGray" 
-              StrokeThickness="1.5"
-              Data="M 0, 10 
-              L 22, 10
-              
-              " 
-               />
-
-        <Path Stroke="LightGray" 
+        <Path x:Name="stripe2" Stroke="Black" 
               StrokeThickness="1"
               Data="M 0, 50 
               L 0, 60.5 
               L 10,69
               C 20, 60  0, 50  0, 50
-             " 
-              Fill="LightGray"
+              "
               />
 
-        <Path Stroke="LightGray" 
-              StrokeThickness="3.5"
-              Data="M 28, 84 
-             L 43, 67
-             
-              
-              
-             " 
-              Fill="LightGray"
+        <Path x:Name="stripe3" Stroke="Black" 
+              StrokeThickness="1"
+              Data="M 28, 83 
+              L 42, 67
+              L 45, 71
+              L 32, 85
+              "
               />
-
     </Grid>
 </UserControl>

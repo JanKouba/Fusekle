@@ -12,10 +12,14 @@ namespace Fusekle
     {
         private bool engaged;
         private bool preEngaged;
+        private int bodyColor;
+        private int stripesColor;
 
         public bool Engaged { get => engaged; set => engaged = value; }
         public bool PreEngaged { get => preEngaged; set => preEngaged = value; }
         public Rect Rect { get => rect; }
+        public int BodyColor { get => bodyColor; }
+        public int StripesColor { get => stripesColor; set => stripesColor = value; }
 
         private Rect rect;
       
@@ -25,7 +29,7 @@ namespace Fusekle
 
         private bool _isRectDragInProg = false;
 
-        public Fuska(Canvas canvas, double startX, double startY, string name)
+        public Fuska(Canvas canvas, double startX, double startY, int bColor, int sColor)
         {
             InitializeComponent();
             gridMain.Height = 90;
@@ -35,9 +39,14 @@ namespace Fusekle
             Canvas.SetLeft(this, startX);
 
             myCanvas = canvas;
-            Name = name;
-
+           
             rect = new Rect(startX, startY, 20, 20);
+
+            bodyColor = bColor;
+            stripesColor = sColor;
+
+            SetColors();
+
         }
 
 
@@ -107,6 +116,86 @@ namespace Fusekle
                 var mousePos = e.GetPosition(myCanvas);
                 Moving(mousePos.X, mousePos.Y);
             }
+        }
+
+        private void SetColors()
+        {
+            Style style = new Style();
+            
+            switch (bodyColor)
+            {
+                case 0: 
+                    style = Resources["Black"] as Style;
+                    break;
+                case 1:
+                    style = Resources["White"] as Style;
+                    break;
+                case 2:
+                    style = Resources["OrangeRed"] as Style;
+                    break;
+                case 3:
+                    style = Resources["DarkGray"] as Style;
+                    break;
+                case 4:
+                    style = Resources["Goldenrod"] as Style;
+                    break;
+                case 5:
+                    style = Resources["Brown"] as Style;
+                    break;
+                case 6:
+                    style = Resources["Teal"] as Style;
+                    break;
+                case 7:
+                    style = Resources["BlueViolet"] as Style;
+                    break;
+                case 8:
+                    style = Resources["Olive"] as Style;
+                    break;
+                case 9:
+                    style = Resources["DeepSkyBlue"] as Style;
+                    break;
+            }
+
+            fuskaBody.Style = style;
+
+            switch (stripesColor)
+            {
+                case 0:
+                    style = Resources["Black"] as Style;
+                    break;
+                case 1:
+                    style = Resources["White"] as Style;
+                    break;
+                case 2:
+                    style = Resources["OrangeRed"] as Style;
+                    break;
+                case 3:
+                    style = Resources["DarkGray"] as Style;
+                    break;
+                case 4:
+                    style = Resources["Goldenrod"] as Style;
+                    break;
+                case 5:
+                    style = Resources["Brown"] as Style;
+                    break;
+                case 6:
+                    style = Resources["Teal"] as Style;
+                    break;
+                case 7:
+                    style = Resources["BlueViolet"] as Style;
+                    break;
+                case 8:
+                    style = Resources["Olive"] as Style;
+                    break;
+                case 9:
+                    style = Resources["DeepSkyBlue"] as Style;
+                    break;
+            }
+
+            stripe1.Style = style;
+            stripe2.Style = style;
+            stripe3.Style = style;
+
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 
 namespace Fusekle
@@ -32,8 +33,15 @@ namespace Fusekle
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //for test: just create 6 pieces of item(fuska) and the same amount of places(misto)
-            NewGame(6);
+            NewGame(9);
         }
+
+        public int GetRandom(int min, int max)
+        {
+            var seed = Convert.ToInt32(Regex.Match(Guid.NewGuid().ToString(), @"\d+").Value);
+            return new Random(seed).Next(min, max);
+        }
+
 
         private void Button_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -46,7 +54,14 @@ namespace Fusekle
 
             while (cnt-- > 0)
             {
-                Fuska f = new Fuska(canvas, 75 * cnt, 0, "A");
+                Fuska f = new Fuska(
+                    canvas, 
+                    75 * cnt, 
+                    0,
+                    GetRandom(0, 9),
+                    GetRandom(0, 9)
+                    );
+
                 Misto m = new Misto(75 * cnt, 150);
 
                 canvas.Children.Add(m);
@@ -62,7 +77,7 @@ namespace Fusekle
             fusky.Clear();
             mista.Clear();
             canvas.Children.Clear();
-            NewGame(6);
+            NewGame(9);
         }
     }
 }

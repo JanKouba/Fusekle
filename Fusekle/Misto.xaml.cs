@@ -26,7 +26,6 @@ namespace Fusekle
 
             Canvas.SetLeft(this, startX);
             Canvas.SetTop(this, startY);
-            
 
             rect = new Rect(startX, startY, 50, 90);
         }
