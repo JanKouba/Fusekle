@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Fusekle"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="Languages\Dict-EN.xaml"/>
     </Application.Resources>
 </Application>

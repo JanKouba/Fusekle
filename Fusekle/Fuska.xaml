@@ -62,7 +62,7 @@
               "  
             />
 
-        <Path x:Name="stripe1" Stroke="Black" 
+        <Path x:Name="fuskaStripe1" Stroke="Black" 
               StrokeThickness="1"
               Data="M 0, 5 
               L 22, 5
@@ -71,7 +71,7 @@
               " 
               />
 
-        <Path x:Name="stripe2" Stroke="Black" 
+        <Path x:Name="fuskaStripe2" Stroke="Black" 
               StrokeThickness="1"
               Data="M 0, 50 
               L 0, 60.5 
@@ -80,7 +80,7 @@
               "
               />
 
-        <Path x:Name="stripe3" Stroke="Black" 
+        <Path x:Name="fuskaStripe3" Stroke="Black" 
               StrokeThickness="1"
               Data="M 28, 83 
               L 42, 67

@@ -19,7 +19,7 @@ namespace Fusekle
         public bool PreEngaged { get => preEngaged; set => preEngaged = value; }
         public Rect Rect { get => rect; }
         public int BodyColor { get => bodyColor; }
-        public int StripesColor { get => stripesColor; set => stripesColor = value; }
+        public int StripesColor { get => stripesColor; }
 
         private Rect rect;
       
@@ -46,9 +46,7 @@ namespace Fusekle
             stripesColor = sColor;
 
             SetColors();
-
         }
-
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -192,9 +190,9 @@ namespace Fusekle
                     break;
             }
 
-            stripe1.Style = style;
-            stripe2.Style = style;
-            stripe3.Style = style;
+            fuskaStripe1.Style = style;
+            fuskaStripe2.Style = style;
+            fuskaStripe3.Style = style;
 
         }
     }
