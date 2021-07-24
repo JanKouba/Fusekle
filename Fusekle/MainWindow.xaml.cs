@@ -30,6 +30,7 @@ namespace Fusekle
         List<Fuska> fusky = new List<Fuska>();
         List<Misto> mista = new List<Misto>();
 
+
         int langCode = 1033;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -53,26 +54,40 @@ namespace Fusekle
         /// </summary>
         /// <param name="itemCount">Number of socks pairs</param>
         private void NewGame(int itemCount)
-        {  
-            int cnt = itemCount;
+        {
+            fusky.Clear();
+            mista.Clear();
+            canvas.Children.Clear();
 
-            while (cnt-- > 0)
+            int cntM = 0;
+
+            while (cntM < itemCount * 2)
             {
+                Misto m = new Misto(75 * cntM, 150);
+                canvas.Children.Add(m);
+                mista.Add(m);
+                cntM++;
+            }
+
+            int cntF = itemCount;
+
+            while (cntF-- > 0)
+            {
+                int bodyColor = GetRandom(0, 9);
+                int stripesColor = GetRandom(0, 9);
+                
+                for (int i = 1; i <= 2; i++)
+                { 
                 Fuska f = new Fuska(
                     canvas, 
-                    75 * cnt, 
+                    75 * cntF, 
                     50,
-                    GetRandom(0, 9),
-                    GetRandom(0, 9)
+                    bodyColor,
+                    stripesColor
                     );
-
-                Misto m = new Misto(75 * cnt, 150);
-
-                canvas.Children.Add(m);
-                canvas.Children.Add(f);
-
-                fusky.Add(f);
-                mista.Add(m);
+                    canvas.Children.Add(f);
+                    fusky.Add(f);
+                }
             }
         }
 
@@ -125,10 +140,6 @@ namespace Fusekle
         private void labelNewGame_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             gridMenu.Visibility = Visibility.Hidden;
-
-            fusky.Clear();
-            mista.Clear();
-            canvas.Children.Clear();
             NewGame(9);
         }
 
@@ -159,6 +170,23 @@ namespace Fusekle
         }
 
         #endregion
+
+        private class Pair
+        {
+            private Fuska fuska1;
+            private Fuska fuska2;
+            private bool resolved = false;
+
+            public Fuska Fuska1 { get => fuska1; set => fuska1 = value; }
+            public Fuska Fuska2 { get => fuska2; set => fuska2 = value; }
+            public bool Resolved { get => resolved; set => resolved = value; }
+
+            public Pair (Fuska fuska_1, Fuska fuska_2)
+            {
+                fuska1 = fuska_1;
+                fuska2 = fuska_2;
+            }
+        }
 
     }
 }

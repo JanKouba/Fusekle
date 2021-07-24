@@ -8,7 +8,7 @@
         Loaded="Window_Loaded"
         Title="MainWindow" Height="450" Width="800"
         WindowStyle="None"
-        WindowState="Maximized"
+        WindowState="Normal"
         KeyDown="Window_KeyDown"
         >
     <Window.Resources>

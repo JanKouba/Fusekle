@@ -33,9 +33,13 @@ namespace Fusekle
         public Rect rect;
         public bool isHighLighted = false;
 
+        private int bodyColor;
+        private int stripesColor;
         private bool engaged;
 
         public bool Engaged { get => engaged; set { engaged = value; OnEngaged(); } }
+        public int BodyColor { get => bodyColor; set => bodyColor = value; }
+        public int StripesColor { get => stripesColor; set => stripesColor = value; }
 
         public void HighLight()
         {
@@ -48,6 +52,13 @@ namespace Fusekle
         {
             gridMain.Style = Resources["LowLight"] as Style;
             this.Opacity = 0;
+            isHighLighted = false;
+        }
+
+        public void WrongLight()
+        {
+            gridMain.Style = Resources["WrongLight"] as Style;
+            this.Opacity = 0.5;
             isHighLighted = false;
         }
 

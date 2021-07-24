@@ -57,14 +57,16 @@ namespace Fusekle
 
         private void gridMain_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-           this.Opacity = 1;
+            this.Opacity = 1;
             _isRectDragInProg = false;
             this.ReleaseMouseCapture();
 
             if (preEngaged)
             {
-                engaged = true;
+                this.engaged = true;
                 engagedMisto.Engaged = true;
+                engagedMisto.BodyColor = this.bodyColor;
+                engagedMisto.StripesColor = this.stripesColor;
                 Canvas.SetLeft(this, engagedMisto.rect.Left);
                 Canvas.SetTop(this, engagedMisto.rect.Top);
             }
@@ -88,14 +90,20 @@ namespace Fusekle
 
                 var mista = this.myCanvas.Children.OfType<Misto>();
 
+                int indexMisto = 0;
                 foreach (var misto in mista)
                 {
                     if (!misto.Engaged)
                         if (Rect.IntersectsWith(misto.rect))
                         {
-                            misto.HighLight();
-                            preEngaged = true;
-                            engagedMisto = misto;
+                            if (!GetNeighbors(indexMisto))
+                                misto.WrongLight();
+                            else
+                            {
+                                misto.HighLight();
+                                preEngaged = true;
+                                engagedMisto = misto;
+                            }
                             return;
                         }
                         else
@@ -103,6 +111,7 @@ namespace Fusekle
                             misto.LowLight();
                             preEngaged = false;
                         }
+                    indexMisto++;
                 }
             }
         }
@@ -114,6 +123,47 @@ namespace Fusekle
                 var mousePos = e.GetPosition(myCanvas);
                 Moving(mousePos.X, mousePos.Y);
             }
+        }
+
+        private bool GetNeighbors(int indexCheckMisto)
+        {
+            bool result = false;
+
+            if (indexCheckMisto % 2 == 0)
+                result = GetRightNeighbor(indexCheckMisto);
+            if (indexCheckMisto % 2 == 1)
+                result = GetLeftNeighbor(indexCheckMisto);
+
+            return result;
+
+        }
+        private bool GetRightNeighbor(int indexCheckMisto)
+        {
+            bool result = false;
+            var mista = this.myCanvas.Children.OfType<Misto>();
+
+            Misto rightNeighbor = mista.ElementAt(indexCheckMisto+1);
+            if (!rightNeighbor.Engaged)
+                result = true;
+            else if (rightNeighbor.BodyColor == this.BodyColor && rightNeighbor.StripesColor == this.stripesColor)
+                result = true;
+
+            return result;
+
+        }
+
+        private bool GetLeftNeighbor(int indexCheckMisto)
+        {
+            bool result = false;
+            var mista = this.myCanvas.Children.OfType<Misto>();
+
+            Misto rightNeighbor = mista.ElementAt(indexCheckMisto-1);
+            if (!rightNeighbor.Engaged)
+                result = true;
+            else if (rightNeighbor.BodyColor == this.BodyColor && rightNeighbor.StripesColor == this.stripesColor)
+                result = true;
+
+            return result;
         }
 
         private void SetColors()
