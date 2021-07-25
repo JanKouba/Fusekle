@@ -69,7 +69,10 @@ namespace Fusekle
                 engagedMisto.StripesColor = this.stripesColor;
                 Canvas.SetLeft(this, engagedMisto.rect.Left);
                 Canvas.SetTop(this, engagedMisto.rect.Top);
+                SoundPlayer.Play(SoundPlayer.Sounds.GoodStep);
             }
+            else
+                SoundPlayer.Play(SoundPlayer.Sounds.WrongStep);
         }
 
         private void gridMain_MouseLeave(object sender, MouseEventArgs e)
@@ -97,12 +100,16 @@ namespace Fusekle
                         if (Rect.IntersectsWith(misto.rect))
                         {
                             if (!GetNeighbors(indexMisto))
+                            {
                                 misto.WrongLight();
+                               
+                            }
                             else
                             {
                                 misto.HighLight();
                                 preEngaged = true;
                                 engagedMisto = misto;
+                                
                             }
                             return;
                         }

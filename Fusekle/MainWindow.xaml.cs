@@ -30,11 +30,15 @@ namespace Fusekle
         List<Fuska> fusky = new List<Fuska>();
         List<Misto> mista = new List<Misto>();
 
-
         int langCode = 1033;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
+
+            //Init volume control
+            SoundPlayer.Volume += 100;
+            SoundPlayer.Volume -= 100;
         }
 
         /// <summary>
@@ -89,6 +93,8 @@ namespace Fusekle
                     fusky.Add(f);
                 }
             }
+
+            canvas.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -120,6 +126,7 @@ namespace Fusekle
         private void labelNewGame_MouseEnter(object sender, MouseEventArgs e)
         {
             ((Label)sender).Style = Resources["labelMenuSelected"] as Style;
+           
         }
 
         private void labelNewGame_MouseLeave(object sender, MouseEventArgs e)
@@ -141,16 +148,22 @@ namespace Fusekle
         {
             gridMenu.Visibility = Visibility.Hidden;
             NewGame(9);
+            SoundPlayer.Play(SoundPlayer.Sounds.NewGame);
         }
 
         private void labelDont_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ((Label)sender).Style = Resources["labelMenuSelected"] as Style;
+            SoundPlayer.Play(SoundPlayer.Sounds.DontTouch);
+            System.Threading.Thread.Sleep(1000);
+            SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
         }
 
         private void labelResume_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             gridMenu.Visibility = Visibility.Hidden;
+            SoundPlayer.Close();
+            canvas.Visibility = Visibility.Visible;
         }
              
         private void labelLang_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -166,7 +179,11 @@ namespace Fusekle
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
+            {
                 gridMenu.Visibility = Visibility.Visible;
+                SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
+                canvas.Visibility = Visibility.Hidden;
+            }
         }
 
         #endregion
@@ -188,5 +205,16 @@ namespace Fusekle
             }
         }
 
+        private void labelVolPlus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (SoundPlayer.Volume < 1000)
+                SoundPlayer.Volume += 100;
+        }
+
+        private void labelVolMinus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (SoundPlayer.Volume > 0)
+                SoundPlayer.Volume -= 100;
+        }
     }
 }

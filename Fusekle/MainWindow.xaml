@@ -8,7 +8,7 @@
         Loaded="Window_Loaded"
         Title="MainWindow" Height="450" Width="800"
         WindowStyle="None"
-        WindowState="Normal"
+        WindowState="Maximized"
         KeyDown="Window_KeyDown"
         >
     <Window.Resources>
@@ -29,7 +29,11 @@
     </Window.Resources>
 
     <Grid>
-        <Grid x:Name="grdMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+        <Grid x:Name="grdMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -37,8 +41,10 @@
                 </LinearGradientBrush>
             </Grid.Background>
 
-            <Grid x:Name="gridMenu" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid x:Name="gridMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
@@ -77,7 +83,7 @@
                        MouseLeave="labelDont_MouseLeave" 
                        MouseLeftButtonDown="labelLang_MouseLeftButtonDown"/>
                     </Viewbox>
-                <Viewbox Grid.Row="4">
+                <Viewbox Grid.Row="5">
                     <Label x:Name="labelExit" 
                        Content="{DynamicResource exit}" 
                        Style="{StaticResource labelMenu}" 
@@ -85,6 +91,26 @@
                        MouseLeave="labelDont_MouseLeave" 
                        MouseLeftButtonDown="labelExit_MouseLeftButtonDown"/>
                 </Viewbox>
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <Viewbox>
+                        <Label x:Name="labelVolPlus" 
+                       Content="Vol Up" 
+                       Style="{StaticResource labelMenu}" 
+                       MouseEnter="labelDont_MouseEnter" 
+                       MouseLeave="labelDont_MouseLeave" 
+                       MouseLeftButtonDown="labelVolPlus_MouseLeftButtonDown"/>
+                    </Viewbox>
+                    <Viewbox>
+                        <Label x:Name="labelVolMinus" 
+                       Content="Vol Down" 
+                       Style="{StaticResource labelMenu}" 
+                       MouseEnter="labelDont_MouseEnter" 
+                       MouseLeave="labelDont_MouseLeave" 
+                       MouseLeftButtonDown="labelVolMinus_MouseLeftButtonDown"/>
+                    </Viewbox>
+                </StackPanel>
+
             </Grid>
 
             <Canvas x:Name="canvas">

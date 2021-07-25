@@ -91,6 +91,7 @@
     <Compile Include="Misto.xaml.cs">
       <DependentUpon>Misto.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SoundPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -122,6 +123,23 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="fusekle_modra.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sounds\donttouch.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\goodstep.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\menumusic.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\newgame.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\wrongstep.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

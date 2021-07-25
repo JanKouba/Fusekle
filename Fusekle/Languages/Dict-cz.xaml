@@ -8,4 +8,5 @@
     <system:String x:Key="language">Jazyk</system:String>
     <system:String x:Key="exit">Konec</system:String>
 
+
 </ResourceDictionary>
