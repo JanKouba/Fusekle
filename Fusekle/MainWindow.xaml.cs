@@ -39,6 +39,12 @@ namespace Fusekle
             //Init volume control
             SoundPlayer.Volume += 100;
             SoundPlayer.Volume -= 100;
+
+
+            ImageBrush ib = new ImageBrush();
+            ib.ImageSource = new BitmapImage(new Uri(@"Images\wallpaper.jpg", UriKind.Relative));
+            canvas.Background = ib;
+            canvas.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -63,14 +69,24 @@ namespace Fusekle
             mista.Clear();
             canvas.Children.Clear();
 
-            int cntM = 0;
+            int rowM = 3;
+            int cntM = (itemCount * 2) / rowM;
 
-            while (cntM < itemCount * 2)
+            int currentRowM = 0;
+           
+
+            while (currentRowM < rowM)
             {
-                Misto m = new Misto(75 * cntM, 150);
-                canvas.Children.Add(m);
-                mista.Add(m);
-                cntM++;
+                int currentColumnM = 0;
+
+                while (currentColumnM < cntM)
+                {
+                    Misto m = new Misto(75 * currentColumnM, 150 * (1 +currentRowM));
+                    canvas.Children.Add(m);
+                    mista.Add(m);
+                    currentColumnM++;
+                }
+                currentRowM++;
             }
 
             int cntF = itemCount;
@@ -84,7 +100,8 @@ namespace Fusekle
                 { 
                 Fuska f = new Fuska(
                     canvas, 
-                    75 * cntF, 
+                    10,
+                    //75 * cntF, 
                     50,
                     bodyColor,
                     stripesColor
@@ -92,6 +109,11 @@ namespace Fusekle
                     canvas.Children.Add(f);
                     fusky.Add(f);
                 }
+            }
+
+            foreach (Fuska fuska in fusky)
+            {
+                Panel.SetZIndex(fuska, GetRandom(0,itemCount * 2));
             }
 
             canvas.Visibility = Visibility.Visible;

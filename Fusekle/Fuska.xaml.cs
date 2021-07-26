@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace Fusekle
 {
@@ -14,6 +17,8 @@ namespace Fusekle
         private bool preEngaged;
         private int bodyColor;
         private int stripesColor;
+        private double startPositionX;
+        private double startPositionY;
 
         public bool Engaged { get => engaged; set => engaged = value; }
         public bool PreEngaged { get => preEngaged; set => preEngaged = value; }
@@ -50,6 +55,9 @@ namespace Fusekle
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            startPositionX = Canvas.GetLeft(this);
+            startPositionY = Canvas.GetTop(this);
+
             this.Opacity = 0.5;
             _isRectDragInProg = true;
             this.CaptureMouse();
@@ -72,7 +80,12 @@ namespace Fusekle
                 SoundPlayer.Play(SoundPlayer.Sounds.GoodStep);
             }
             else
+            { 
                 SoundPlayer.Play(SoundPlayer.Sounds.WrongStep);
+              
+                Canvas.SetLeft(this, startPositionX);
+                Canvas.SetTop(this, startPositionY);
+            }
         }
 
         private void gridMain_MouseLeave(object sender, MouseEventArgs e)
@@ -172,6 +185,12 @@ namespace Fusekle
 
             return result;
         }
+
+
+       
+
+        
+
 
         private void SetColors()
         {

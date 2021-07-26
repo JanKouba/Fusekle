@@ -69,6 +69,7 @@ namespace Fusekle
             {
                 case Sounds.MenuMusic:
                     Open("Sounds\\menumusic.mp3");
+                    loop = true;
                     break;
                 case Sounds.NewGame:
                     Open("Sounds\\newgame.mp3");

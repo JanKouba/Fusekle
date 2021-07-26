@@ -125,6 +125,9 @@
     <Resource Include="fusekle_modra.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\wallpaper.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sounds\donttouch.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -10,6 +10,7 @@
         WindowStyle="None"
         WindowState="Maximized"
         KeyDown="Window_KeyDown"
+       
         >
     <Window.Resources>
         <Style x:Key="labelMenu" TargetType="Label">
@@ -26,13 +27,21 @@
             <Setter Property="FontSize" Value="48" />
            <Setter Property="Foreground" Value="DarkRed"/>
         </Style>
+        <Style x:Key="labelFusekle" TargetType="Label">
+            <Setter Property="FontFamily" Value="Fonts/comic_fade.ttf #Comic fade"/>
+            <Setter Property="FontSize" Value="48" />
+            <Setter Property="Foreground" Value="Khaki"/>
+        </Style>
+
+     
     </Window.Resources>
 
     <Grid>
         <Grid x:Name="grdMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.1*"></RowDefinition>
+               
                 <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="0.05*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -41,8 +50,32 @@
                 </LinearGradientBrush>
             </Grid.Background>
 
-            <Grid x:Name="gridMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+            <Viewbox Grid.Row="1">
+            <StackPanel  Orientation="Horizontal">
+                
+                    
+                <Viewbox>
+                    <Label Content="Sound effects: freesoundslibrary.com ||"></Label>
+                </Viewbox>
+                <Viewbox>
+                    <Label Content="Font: Comic Fade by Geronimo Font Studios ||"></Label>
+                </Viewbox>
+                <Viewbox>
+                    <Label Content="Wallpapers: pexels.com/@andyhvu ||"></Label>
+                </Viewbox>
+                <Viewbox>
+                    <Label Content="Microsoft Visual Studio 2019 Community ||"></Label>
+                </Viewbox>
+                <Viewbox>
+                    <Label Content="Created by: Jan Kouba, 2021" Foreground="Gray" ></Label>
+                </Viewbox>
+                
+            </StackPanel>
+            </Viewbox>
+
+            <Grid x:Name="gridMenu" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
@@ -51,7 +84,15 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
+
                 <Viewbox Grid.Row="0">
+                    <Label x:Name="labelFusekle" 
+                           Content="F : U : S : E : K : L : E " 
+                           Style="{StaticResource labelFusekle}"
+                           />
+                </Viewbox>
+                
+                <Viewbox Grid.Row="1">
                     <Label x:Name="labelNewGame" 
                            Content="{DynamicResource newGame}" 
                            Style="{StaticResource labelMenuNewGame}"
@@ -59,7 +100,7 @@
                            MouseLeave="labelNewGame_MouseLeave"
                            MouseLeftButtonDown="labelNewGame_MouseLeftButtonDown"/>
                 </Viewbox>
-                <Viewbox Grid.Row="1">
+                <Viewbox Grid.Row="2">
                     <Label x:Name="labelResume" 
                            Content="{DynamicResource resume}" 
                            Style="{StaticResource labelMenu}"
@@ -67,7 +108,7 @@
                            MouseLeave="labelDont_MouseLeave"
                            MouseLeftButtonDown="labelResume_MouseLeftButtonDown"/>
                 </Viewbox>
-                <Viewbox Grid.Row="2">
+                <Viewbox Grid.Row="3">
                     <Label x:Name="labelDont" 
                            Content="{DynamicResource dontTouch}" 
                            Style="{StaticResource labelMenu}"
@@ -75,7 +116,7 @@
                            MouseLeave="labelDont_MouseLeave"
                            MouseLeftButtonDown="labelDont_MouseLeftButtonDown"/>
                     </Viewbox>
-                <Viewbox Grid.Row="3">
+                <Viewbox Grid.Row="4">
                     <Label x:Name="labelLang" 
                        Content="{DynamicResource language}" 
                        Style="{StaticResource labelMenu}" 
@@ -83,7 +124,32 @@
                        MouseLeave="labelDont_MouseLeave" 
                        MouseLeftButtonDown="labelLang_MouseLeftButtonDown"/>
                     </Viewbox>
-                <Viewbox Grid.Row="5">
+
+                <Grid Grid.Row="5" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Viewbox Grid.Column="0">
+                        <Label x:Name="labelVolPlus" 
+                       Content="Vol Up" 
+                       Style="{StaticResource labelMenu}" 
+                       MouseEnter="labelDont_MouseEnter" 
+                       MouseLeave="labelDont_MouseLeave" 
+                       MouseLeftButtonDown="labelVolPlus_MouseLeftButtonDown"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1">
+                        <Label x:Name="labelVolMinus" 
+                       Content="Vol Down" 
+                       Style="{StaticResource labelMenu}" 
+                       MouseEnter="labelDont_MouseEnter" 
+                       MouseLeave="labelDont_MouseLeave" 
+                       MouseLeftButtonDown="labelVolMinus_MouseLeftButtonDown"/>
+                    </Viewbox>
+                </Grid>
+                
+                <Viewbox Grid.Row="6">
                     <Label x:Name="labelExit" 
                        Content="{DynamicResource exit}" 
                        Style="{StaticResource labelMenu}" 
@@ -92,29 +158,12 @@
                        MouseLeftButtonDown="labelExit_MouseLeftButtonDown"/>
                 </Viewbox>
 
-                <StackPanel Grid.Row="4" Orientation="Horizontal">
-                    <Viewbox>
-                        <Label x:Name="labelVolPlus" 
-                       Content="Vol Up" 
-                       Style="{StaticResource labelMenu}" 
-                       MouseEnter="labelDont_MouseEnter" 
-                       MouseLeave="labelDont_MouseLeave" 
-                       MouseLeftButtonDown="labelVolPlus_MouseLeftButtonDown"/>
-                    </Viewbox>
-                    <Viewbox>
-                        <Label x:Name="labelVolMinus" 
-                       Content="Vol Down" 
-                       Style="{StaticResource labelMenu}" 
-                       MouseEnter="labelDont_MouseEnter" 
-                       MouseLeave="labelDont_MouseLeave" 
-                       MouseLeftButtonDown="labelVolMinus_MouseLeftButtonDown"/>
-                    </Viewbox>
-                </StackPanel>
+                
 
             </Grid>
 
             <Canvas x:Name="canvas">
-
+                
             </Canvas>
         </Grid>
 

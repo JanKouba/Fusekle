@@ -27,8 +27,11 @@
             <Setter Property="Opacity" Value="0.5"/>
         </Style>
     </UserControl.Resources>
-    
+
+    <Border BorderThickness="1" BorderBrush="Red">
     <Grid x:Name="gridMain" Height="90" Width="50" Style="{StaticResource LowLight}">
-      
+   
+
     </Grid>
+    </Border>
 </UserControl>
