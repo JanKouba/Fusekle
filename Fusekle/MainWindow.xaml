@@ -67,7 +67,7 @@
                     <Label Content="Microsoft Visual Studio 2019 Community ||"></Label>
                 </Viewbox>
                 <Viewbox>
-                    <Label Content="Created by: Jan Kouba, 2021" Foreground="Gray" ></Label>
+                    <Label Content="Jan Kouba, 2021" Foreground="Gray" ></Label>
                 </Viewbox>
                 
             </StackPanel>

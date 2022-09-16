@@ -51,7 +51,7 @@ namespace Fusekle
         public void LowLight()
         {
             gridMain.Style = Resources["LowLight"] as Style;
-            this.Opacity = 0;
+            this.Opacity = 0.2;
             isHighLighted = false;
         }
 

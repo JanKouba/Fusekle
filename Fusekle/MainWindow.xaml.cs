@@ -69,7 +69,7 @@ namespace Fusekle
             mista.Clear();
             canvas.Children.Clear();
 
-            int rowM = 3;
+            int rowM = 5;
             int cntM = (itemCount * 2) / rowM;
 
             int currentRowM = 0;
@@ -104,8 +104,8 @@ namespace Fusekle
                     //75 * cntF, 
                     50,
                     bodyColor,
-                    stripesColor
-                    );
+                    stripesColor,
+                    rowM);
                     canvas.Children.Add(f);
                     fusky.Add(f);
                 }
@@ -169,7 +169,7 @@ namespace Fusekle
         private void labelNewGame_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             gridMenu.Visibility = Visibility.Hidden;
-            NewGame(9);
+            NewGame(30);
             SoundPlayer.Play(SoundPlayer.Sounds.NewGame);
         }
 

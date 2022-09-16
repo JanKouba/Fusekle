@@ -34,7 +34,9 @@ namespace Fusekle
 
         private bool _isRectDragInProg = false;
 
-        public Fuska(Canvas canvas, double startX, double startY, int bColor, int sColor)
+        private int _rowCount = 0;
+
+        public Fuska(Canvas canvas, double startX, double startY, int bColor, int sColor, int rowCount)
         {
             InitializeComponent();
             gridMain.Height = 90;
@@ -51,6 +53,8 @@ namespace Fusekle
             stripesColor = sColor;
 
             SetColors();
+
+            _rowCount = rowCount;
         }
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -145,52 +149,73 @@ namespace Fusekle
             }
         }
 
-        private bool GetNeighbors(int indexCheckMisto)
-        {
-            bool result = false;
-
-            if (indexCheckMisto % 2 == 0)
-                result = GetRightNeighbor(indexCheckMisto);
-            if (indexCheckMisto % 2 == 1)
-                result = GetLeftNeighbor(indexCheckMisto);
-
-            return result;
-
-        }
-        private bool GetRightNeighbor(int indexCheckMisto)
+        private bool GetNeighbors(int indexMisto)
         {
             bool result = false;
             var mista = this.myCanvas.Children.OfType<Misto>();
 
-            Misto rightNeighbor = mista.ElementAt(indexCheckMisto+1);
-            if (!rightNeighbor.Engaged)
+            //Is it the first in a row?
+            if (indexMisto == 0 || indexMisto % (mista.Count() / _rowCount) == 0)
                 result = true;
-            else if (rightNeighbor.BodyColor == this.BodyColor && rightNeighbor.StripesColor == this.stripesColor)
-                result = true;
+            else
+            {
+                if (indexMisto % 2 == 1)
+                    result = GetLeftNeighbor(indexMisto, _rowCount);
+                if (indexMisto % 2 == 0)
+                    result = GetLeftNeighbor(indexMisto, _rowCount) || GetUpDownNeighbor(indexMisto, _rowCount);
+            }
 
             return result;
-
         }
 
-        private bool GetLeftNeighbor(int indexCheckMisto)
+        private bool GetUpDownNeighbor(int indexCheckMisto, int rowCount)
         {
             bool result = false;
             var mista = this.myCanvas.Children.OfType<Misto>();
 
-            Misto rightNeighbor = mista.ElementAt(indexCheckMisto-1);
-            if (!rightNeighbor.Engaged)
+            //If index > total count / row count => check upper row
+            if (indexCheckMisto >= mista.Count() / rowCount)
+            { 
+                Misto rightNeighbor = mista.ElementAt(indexCheckMisto - mista.Count() / rowCount);
+                if (rightNeighbor.Engaged)
+                    result = true;
+            }
+
+            //If index + total count / row count< total count = > check lower row
+            if (indexCheckMisto + mista.Count() / rowCount < mista.Count())
+            { 
+                Misto rightNeighbor = mista.ElementAt(indexCheckMisto + mista.Count() / rowCount);
+                if (rightNeighbor.Engaged)
                 result = true;
-            else if (rightNeighbor.BodyColor == this.BodyColor && rightNeighbor.StripesColor == this.stripesColor)
-                result = true;
+            }
 
             return result;
+
         }
 
+        private bool GetLeftNeighbor(int indexCheckMisto, int rowCount)
+        {
+            bool result = false;
+            var mista = this.myCanvas.Children.OfType<Misto>();
 
-       
+            Misto leftNeighbor = mista.ElementAt(indexCheckMisto - 1);
 
-        
-
+            if (indexCheckMisto % 2 == 0 && leftNeighbor.Engaged)
+                result = true;
+            else
+                if (indexCheckMisto % 2 == 1)
+                {
+                    if (leftNeighbor.BodyColor == this.BodyColor && leftNeighbor.StripesColor == this.stripesColor)
+                        result = true;
+            
+                    if (indexCheckMisto < mista.Count() - 2)                            // the place is not the last one
+                        if ((indexCheckMisto + 1) % (mista.Count() / rowCount) != 0)    // and the place is not on the end of the row
+                            if (mista.ElementAt(indexCheckMisto + 1).Engaged && !mista.ElementAt(indexCheckMisto - 1).Engaged)           // and the place on the right is already engaged
+                                result = true;
+                }
+            
+            return result;
+        }
 
         private void SetColors()
         {
@@ -272,5 +297,7 @@ namespace Fusekle
 
         }
     }
+
+
 }
 
