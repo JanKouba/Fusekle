@@ -26,6 +26,9 @@ namespace Fusekle
         public int BodyColor { get => bodyColor; }
         public int StripesColor { get => stripesColor; }
 
+        public event EventHandler EventFuskaPlaced;
+        public event EventHandler EventRightClick;
+
         private Rect rect;
       
         private Canvas myCanvas;
@@ -82,6 +85,7 @@ namespace Fusekle
                 Canvas.SetLeft(this, engagedMisto.rect.Left);
                 Canvas.SetTop(this, engagedMisto.rect.Top);
                 SoundPlayer.Play(SoundPlayer.Sounds.GoodStep);
+                EventFuskaPlaced?.Invoke(this, EventArgs.Empty);
             }
             else
             { 
@@ -295,6 +299,11 @@ namespace Fusekle
             fuskaStripe2.Style = style;
             fuskaStripe3.Style = style;
 
+        }
+
+        private void UserControl_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            EventRightClick?.Invoke(this, EventArgs.Empty);
         }
     }
 

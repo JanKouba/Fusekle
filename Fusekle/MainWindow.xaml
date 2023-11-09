@@ -50,6 +50,8 @@
                 </LinearGradientBrush>
             </Grid.Background>
 
+           
+
             <Viewbox Grid.Row="1">
             <StackPanel  Orientation="Horizontal">
                 
@@ -77,6 +79,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1.5*"/>
                     <RowDefinition Height="1*"/>
+                    
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
@@ -100,7 +103,40 @@
                            MouseLeave="labelNewGame_MouseLeave"
                            MouseLeftButtonDown="labelNewGame_MouseLeftButtonDown"/>
                 </Viewbox>
-                <Viewbox Grid.Row="2">
+
+                <Grid Grid.Row="2" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Viewbox Grid.Column="0">
+                        <Label x:Name="labelItemPlus" 
+                       Content="{DynamicResource fuskaPlus}"
+                       Style="{StaticResource labelMenu}" 
+                       MouseEnter="labelDont_MouseEnter" 
+                       MouseLeave="labelDont_MouseLeave" 
+                       MouseLeftButtonDown="labelItemPlus_MouseLeftButtonDown"/>
+                    </Viewbox>
+                    
+                    <Viewbox Grid.Column="1">
+                        <Label x:Name="labelItemCount" 
+                       Content="20" 
+                       Style="{StaticResource labelMenuNewGame}"/>
+                    </Viewbox>
+                    
+                    <Viewbox Grid.Column="2">
+                        <Label x:Name="labelItemMinus" 
+                        Content="{DynamicResource fuskaMinus}" 
+                       Style="{StaticResource labelMenu}" 
+                       MouseEnter="labelDont_MouseEnter" 
+                       MouseLeave="labelDont_MouseLeave" 
+                       MouseLeftButtonDown="labelItemMinus_MouseLeftButtonDown"/>
+                    </Viewbox>
+                </Grid>
+                
+                <Viewbox Grid.Row="3">
                     <Label x:Name="labelResume" 
                            Content="{DynamicResource resume}" 
                            Style="{StaticResource labelMenu}"
@@ -108,7 +144,7 @@
                            MouseLeave="labelDont_MouseLeave"
                            MouseLeftButtonDown="labelResume_MouseLeftButtonDown"/>
                 </Viewbox>
-                <Viewbox Grid.Row="3">
+                <Viewbox Grid.Row="4">
                     <Label x:Name="labelDont" 
                            Content="{DynamicResource dontTouch}" 
                            Style="{StaticResource labelMenu}"
@@ -116,7 +152,7 @@
                            MouseLeave="labelDont_MouseLeave"
                            MouseLeftButtonDown="labelDont_MouseLeftButtonDown"/>
                     </Viewbox>
-                <Viewbox Grid.Row="4">
+                <Viewbox Grid.Row="5">
                     <Label x:Name="labelLang" 
                        Content="{DynamicResource language}" 
                        Style="{StaticResource labelMenu}" 
@@ -125,7 +161,7 @@
                        MouseLeftButtonDown="labelLang_MouseLeftButtonDown"/>
                     </Viewbox>
 
-                <Grid Grid.Row="5" HorizontalAlignment="Center">
+                <Grid Grid.Row="6" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -149,7 +185,7 @@
                     </Viewbox>
                 </Grid>
                 
-                <Viewbox Grid.Row="6">
+                <Viewbox Grid.Row="7">
                     <Label x:Name="labelExit" 
                        Content="{DynamicResource exit}" 
                        Style="{StaticResource labelMenu}" 
@@ -159,11 +195,11 @@
                 </Viewbox>
 
                 
+                
 
             </Grid>
 
             <Canvas x:Name="canvas">
-                
             </Canvas>
         </Grid>
 

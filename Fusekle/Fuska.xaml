@@ -9,6 +9,7 @@
              MouseLeftButtonDown="Grid_MouseLeftButtonDown"
              MouseLeftButtonUp="gridMain_MouseLeftButtonUp"
              MouseLeave="gridMain_MouseLeave"
+             MouseRightButtonUp="UserControl_MouseRightButtonUp"
              >
 
     <UserControl.Resources>

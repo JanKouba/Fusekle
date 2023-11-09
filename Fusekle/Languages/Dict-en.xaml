@@ -6,5 +6,8 @@
 <system:String x:Key="dontTouch">Don't Touch</system:String>
 <system:String x:Key="language">Language</system:String>
 <system:String x:Key="exit">Exit</system:String>
-    
+
+    <system:String x:Key="fuskaPlus">More</system:String>
+    <system:String x:Key="fuskaMinus">Less</system:String>
+
 </ResourceDictionary>

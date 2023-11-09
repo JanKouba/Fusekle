@@ -8,5 +8,10 @@
     <system:String x:Key="language">Jazyk</system:String>
     <system:String x:Key="exit">Konec</system:String>
 
+    <system:String x:Key="fuskaPlus">Pridat</system:String>
+    <system:String x:Key="fuskaMinus">Ubrat</system:String>
+    
+    
+
 
 </ResourceDictionary>

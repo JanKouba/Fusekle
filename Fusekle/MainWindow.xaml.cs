@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
-
+using System.Threading;
+using System.Windows.Threading;
+using System.Xml.Linq;
 
 namespace Fusekle
 {
@@ -29,6 +31,8 @@ namespace Fusekle
 
         List<Fuska> fusky = new List<Fuska>();
         List<Misto> mista = new List<Misto>();
+        int itemCount = 0;
+        int rowCount = 0;
 
         int langCode = 1033;
 
@@ -39,7 +43,8 @@ namespace Fusekle
             //Init volume control
             SoundPlayer.Volume += 100;
             SoundPlayer.Volume -= 100;
-
+            
+            SetItemCount(20);
 
             ImageBrush ib = new ImageBrush();
             ib.ImageSource = new BitmapImage(new Uri(@"Images\wallpaper.jpg", UriKind.Relative));
@@ -63,17 +68,17 @@ namespace Fusekle
         /// Starts new game 
         /// </summary>
         /// <param name="itemCount">Number of socks pairs</param>
-        private void NewGame(int itemCount)
+        private async void NewGame(int itemCount)
         {
             fusky.Clear();
             mista.Clear();
             canvas.Children.Clear();
 
-            int rowM = 5;
-            int cntM = (itemCount * 2) / rowM;
+            int rowM = rowCount;
+            int cntM = ((itemCount * 2) / rowM) + 2;
 
             int currentRowM = 0;
-           
+
 
             while (currentRowM < rowM)
             {
@@ -81,7 +86,7 @@ namespace Fusekle
 
                 while (currentColumnM < cntM)
                 {
-                    Misto m = new Misto(75 * currentColumnM, 150 * (1 +currentRowM));
+                    Misto m = new Misto(75 * currentColumnM, 150 * (1 + currentRowM));
                     canvas.Children.Add(m);
                     mista.Add(m);
                     currentColumnM++;
@@ -95,29 +100,89 @@ namespace Fusekle
             {
                 int bodyColor = GetRandom(0, 9);
                 int stripesColor = GetRandom(0, 9);
-                
+
                 for (int i = 1; i <= 2; i++)
-                { 
-                Fuska f = new Fuska(
-                    canvas, 
-                    10,
-                    //75 * cntF, 
-                    50,
-                    bodyColor,
-                    stripesColor,
-                    rowM);
+                {
+                    Fuska f = new Fuska(
+                        canvas,
+                        10,
+                        //75 * cntF, 
+                        50,
+                        bodyColor,
+                        stripesColor,
+                        rowM);
                     canvas.Children.Add(f);
                     fusky.Add(f);
+
+                    f.EventFuskaPlaced += FuskaPlaced;
+                    f.EventRightClick += FuskaRightClick;
                 }
+
+
             }
 
             foreach (Fuska fuska in fusky)
             {
-                Panel.SetZIndex(fuska, GetRandom(0,itemCount * 2));
+                Panel.SetZIndex(fuska, GetRandom(0, itemCount * 2));
             }
 
             canvas.Visibility = Visibility.Visible;
+
+            CreateGameStats();
         }
+
+        private void FuskaRightClick(object sender, EventArgs e)
+        {
+            Panel.SetZIndex((Fuska)sender, Panel.GetZIndex(((Fuska)sender))-1);
+        }
+
+        private void TimerGame_Tick(object sender, EventArgs e)
+        {
+            tsGame = DateTime.Now - dateTimeGame;
+            labelGameTime.Content = tsGame.ToString(@"hh\:mm\:ss\.ff");
+        }
+
+        Label labelGameTime;
+        Label labelFuskaLeft;
+        private void CreateGameStats()
+        {
+            Grid gridGameStats = new Grid();
+            gridGameStats.HorizontalAlignment = HorizontalAlignment.Left;
+            gridGameStats.VerticalAlignment = VerticalAlignment.Top;
+            gridGameStats.Height = 100;
+
+            StackPanel stackPanel = new StackPanel();
+            stackPanel.HorizontalAlignment = HorizontalAlignment.Right;
+            stackPanel.Orientation  = Orientation.Horizontal;
+
+            labelFuskaLeft = new Label();
+            labelFuskaLeft.Style = (Style)FindResource("labelFusekle");
+            stackPanel.Children.Add(labelFuskaLeft);
+
+            labelGameTime = new Label();
+            labelGameTime.Style = (Style)FindResource("labelMenuNewGame");
+            stackPanel.Children.Add(labelGameTime);
+
+            gridGameStats.Children.Add(stackPanel);  
+
+            canvas.Children.Add(gridGameStats);
+
+            dateTimeGame = DateTime.Now;
+            tsGame = TimeSpan.Zero;
+
+            timerGame = new DispatcherTimer();
+            timerGame.Interval = TimeSpan.FromMilliseconds(10);
+            timerGame.Tick += TimerGame_Tick;
+            timerGame.Start();
+
+        }
+
+        TimeSpan tsGame ;
+        DateTime dateTimeGame;
+        DispatcherTimer timerGame;
+        int fuskaLeft;
+        
+        
 
         /// <summary>
         /// Sets language by langCode (default = 1033)
@@ -141,6 +206,71 @@ namespace Fusekle
             }
             this.Resources.MergedDictionaries.Add(dict);
 
+        }
+
+        private void FuskaPlaced(object sender, EventArgs e)
+        {
+            fuskaLeft = fusky.Count(obj => obj.Engaged == false);
+
+            labelFuskaLeft.Content = fuskaLeft;
+            DetectGameWin();
+        }
+
+        private void DetectGameWin()
+        {
+           if(fuskaLeft == 0) GameWin();
+
+        }
+
+        private void GameWin()
+        {
+            SoundPlayer.Play(SoundPlayer.Sounds.WinApplause);
+            timerGame.Stop();
+
+            Image myImage = new Image();
+            BitmapImage myImageSource = new BitmapImage();
+            myImageSource.BeginInit();
+            myImageSource.UriSource = new Uri(@"Images\youwin.png", UriKind.Relative);
+            myImageSource.EndInit();
+            myImage.Source = myImageSource;
+            myImage.HorizontalAlignment = HorizontalAlignment.Center;
+            myImage.VerticalAlignment = VerticalAlignment.Center;
+
+            canvas.Children.Add(myImage);
+
+            Canvas.SetTop(myImage, (canvas.ActualHeight - myImageSource.Height) / 2);
+            Canvas.SetLeft(myImage, (canvas.ActualWidth - myImageSource.Width) / 2);
+        }
+
+        private void SetItemCount(int add)
+        {
+            itemCount += add;
+
+            if (itemCount > 40)
+                itemCount = 8;
+            if (itemCount < 8)
+                itemCount = 40;
+
+            switch (itemCount)
+            {
+                case var expression when itemCount < 10:
+                    rowCount = 2;
+                    break;
+                case var expression when itemCount < 16:
+                    rowCount = 3;
+                    break;
+                case var expression when itemCount < 20:
+                    rowCount = 5;
+                    break;
+                case var expression when itemCount < 30:
+                    rowCount = 6;
+                    break;
+                case var expression when itemCount < 41:
+                    rowCount = 7;
+                    break;
+            }
+
+            labelItemCount.Content = itemCount;
         }
 
         #region Menu interaction
@@ -169,7 +299,7 @@ namespace Fusekle
         private void labelNewGame_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             gridMenu.Visibility = Visibility.Hidden;
-            NewGame(30);
+            NewGame(itemCount);
             SoundPlayer.Play(SoundPlayer.Sounds.NewGame);
         }
 
@@ -186,6 +316,7 @@ namespace Fusekle
             gridMenu.Visibility = Visibility.Hidden;
             SoundPlayer.Close();
             canvas.Visibility = Visibility.Visible;
+            timerGame.Start();
         }
              
         private void labelLang_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -205,6 +336,7 @@ namespace Fusekle
                 gridMenu.Visibility = Visibility.Visible;
                 SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
                 canvas.Visibility = Visibility.Hidden;
+                timerGame.Stop();
             }
         }
 
@@ -237,6 +369,16 @@ namespace Fusekle
         {
             if (SoundPlayer.Volume > 0)
                 SoundPlayer.Volume -= 100;
+        }
+
+        private void labelItemPlus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SetItemCount(2);
+        }
+
+        private void labelItemMinus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SetItemCount(-2);
         }
     }
 }

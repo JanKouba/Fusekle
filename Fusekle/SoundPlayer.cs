@@ -24,7 +24,8 @@ namespace Fusekle
             NewGame,
             GoodStep,
             WrongStep,
-            DontTouch
+            DontTouch,
+            WinApplause
         }
 
         static SoundPlayer()
@@ -82,6 +83,9 @@ namespace Fusekle
                     break;
                 case Sounds.DontTouch:
                     Open("Sounds\\donttouch.mp3");
+                    break;
+                case Sounds.WinApplause:
+                    Open("Sounds\\winapplause.mp3");
                     break;
             }
 
