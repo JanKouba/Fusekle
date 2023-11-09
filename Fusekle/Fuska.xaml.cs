@@ -30,7 +30,7 @@ namespace Fusekle
         public event EventHandler EventRightClick;
 
         private Rect rect;
-      
+
         private Canvas myCanvas;
 
         private Misto engagedMisto;
@@ -49,7 +49,7 @@ namespace Fusekle
             Canvas.SetLeft(this, startX);
 
             myCanvas = canvas;
-           
+
             rect = new Rect(startX, startY, 20, 20);
 
             bodyColor = bColor;
@@ -88,9 +88,9 @@ namespace Fusekle
                 EventFuskaPlaced?.Invoke(this, EventArgs.Empty);
             }
             else
-            { 
+            {
                 SoundPlayer.Play(SoundPlayer.Sounds.WrongStep);
-              
+
                 Canvas.SetLeft(this, startPositionX);
                 Canvas.SetTop(this, startPositionY);
             }
@@ -117,20 +117,22 @@ namespace Fusekle
                 int indexMisto = 0;
                 foreach (var misto in mista)
                 {
+                    misto.Index = indexMisto;
+
                     if (!misto.Engaged)
                         if (Rect.IntersectsWith(misto.rect))
                         {
                             if (!GetNeighbors(indexMisto))
                             {
                                 misto.WrongLight();
-                               
+
                             }
                             else
                             {
                                 misto.HighLight();
                                 preEngaged = true;
                                 engagedMisto = misto;
-                                
+
                             }
                             return;
                         }
@@ -163,9 +165,9 @@ namespace Fusekle
                 result = true;
             else
             {
-                if (indexMisto % 2 == 1)
+                if (indexMisto % 2 == 1) // If indexMisto is odd
                     result = GetLeftNeighbor(indexMisto, _rowCount);
-                if (indexMisto % 2 == 0)
+                if (indexMisto % 2 == 0) // If indexMisto is even
                     result = GetLeftNeighbor(indexMisto, _rowCount) || GetUpDownNeighbor(indexMisto, _rowCount);
             }
 
@@ -179,7 +181,7 @@ namespace Fusekle
 
             //If index > total count / row count => check upper row
             if (indexCheckMisto >= mista.Count() / rowCount)
-            { 
+            {
                 Misto rightNeighbor = mista.ElementAt(indexCheckMisto - mista.Count() / rowCount);
                 if (rightNeighbor.Engaged)
                     result = true;
@@ -187,16 +189,16 @@ namespace Fusekle
 
             //If index + total count / row count< total count = > check lower row
             if (indexCheckMisto + mista.Count() / rowCount < mista.Count())
-            { 
+            {
                 Misto rightNeighbor = mista.ElementAt(indexCheckMisto + mista.Count() / rowCount);
                 if (rightNeighbor.Engaged)
-                result = true;
+                    result = true;
             }
 
             return result;
 
         }
-
+      
         private bool GetLeftNeighbor(int indexCheckMisto, int rowCount)
         {
             bool result = false;
@@ -208,26 +210,26 @@ namespace Fusekle
                 result = true;
             else
                 if (indexCheckMisto % 2 == 1)
-                {
-                    if (leftNeighbor.BodyColor == this.BodyColor && leftNeighbor.StripesColor == this.stripesColor)
-                        result = true;
-            
-                    if (indexCheckMisto < mista.Count() - 2)                            // the place is not the last one
-                        if ((indexCheckMisto + 1) % (mista.Count() / rowCount) != 0)    // and the place is not on the end of the row
-                            if (mista.ElementAt(indexCheckMisto + 1).Engaged && !mista.ElementAt(indexCheckMisto - 1).Engaged)           // and the place on the right is already engaged
-                                result = true;
-                }
-            
+            {
+                if (leftNeighbor.BodyColor == this.BodyColor && leftNeighbor.StripesColor == this.stripesColor)
+                    result = true;
+
+                //if (indexCheckMisto < mista.Count() - 2)                            // the place is not the last one
+                //    if ((indexCheckMisto + 1) % (mista.Count() / rowCount) != 0)    // and the place is not on the end of the row
+                //        if (mista.ElementAt(indexCheckMisto + 1).Engaged && !mista.ElementAt(indexCheckMisto - 1).Engaged)           // and the place on the right is already engaged
+                //            result = true;
+            }
+
             return result;
         }
-
+        
         private void SetColors()
         {
             Style style = new Style();
-            
+
             switch (bodyColor)
             {
-                case 0: 
+                case 0:
                     style = Resources["Black"] as Style;
                     break;
                 case 1:

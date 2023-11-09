@@ -30,6 +30,8 @@ namespace Fusekle
             rect = new Rect(startX, startY, 50, 90);
         }
 
+        private int index = 0;
+
         public Rect rect;
         public bool isHighLighted = false;
 
@@ -40,6 +42,14 @@ namespace Fusekle
         public bool Engaged { get => engaged; set { engaged = value; OnEngaged(); } }
         public int BodyColor { get => bodyColor; set => bodyColor = value; }
         public int StripesColor { get => stripesColor; set => stripesColor = value; }
+        
+        public int Index { get => index; set =>  SetIndex(value); }
+
+        private void SetIndex(int index)
+        {
+            //Index = index;
+            labelIndex.Content = index;
+        }
 
         public void HighLight()
         {

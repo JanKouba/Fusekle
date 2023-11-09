@@ -14,7 +14,7 @@
         </Style>
         <Style x:Key="LowLight" TargetType="Grid">
             <Setter Property="Background" Value="Green"/>
-            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="Opacity" Value="0.1"/>
         </Style>
 
         <Style x:Key="Engaged" TargetType="Grid">
@@ -29,9 +29,10 @@
     </UserControl.Resources>
 
     <Border BorderThickness="1" BorderBrush="Red">
-    <Grid x:Name="gridMain" Height="90" Width="50" Style="{StaticResource LowLight}">
-   
-
-    </Grid>
+        <Grid x:Name="gridMain" Height="90" Width="50" Style="{StaticResource LowLight}">
+            <Viewbox>
+                <Label x:Name="labelIndex" Content="dsfdsfdsfsdfdsfs" Grid.Row="0" Grid.Column="0" Foreground="Yellow"></Label>
+            </Viewbox>
+        </Grid>
     </Border>
 </UserControl>
