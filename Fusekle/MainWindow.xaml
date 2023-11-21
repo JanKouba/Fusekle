@@ -33,6 +33,28 @@
             <Setter Property="Foreground" Value="Khaki"/>
         </Style>
 
+        <Style x:Key="dataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="Gray"/>
+            <Setter Property="FontSize" Value="48" />
+        </Style>
+
+
+        <Style x:Key="dataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="Lime"/>
+            <Setter Property="FontSize" Value="48" />
+        </Style>
+        
+        <Style x:Key="dataGrid" TargetType="DataGrid">
+            <Setter Property="FontFamily" Value="Fonts/comic_fade.ttf #Comic fade"/>
+            <Setter Property="FontSize" Value="48" />
+            <Setter Property="ColumnHeaderStyle" Value="{StaticResource dataGridHeaderStyle}"/>
+            <Setter Property="RowStyle" Value="{StaticResource dataGridRowStyle}"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+            <Setter Property="BorderThickness" Value="5"/>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
+        </Style>
+        
      
     </Window.Resources>
 
@@ -63,13 +85,13 @@
                     <Label Content="Font: Comic Fade by Geronimo Font Studios ||"></Label>
                 </Viewbox>
                 <Viewbox>
-                    <Label Content="Wallpapers: pexels.com/@andyhvu ||"></Label>
+                    <Label Content="Wallpapers: pexels.com ||"></Label>
                 </Viewbox>
                 <Viewbox>
                     <Label Content="Microsoft Visual Studio 2019 Community ||"></Label>
                 </Viewbox>
                 <Viewbox>
-                    <Label Content="Jan Kouba, 2021" Foreground="Gray" ></Label>
+                    <Label Content="Jan Kouba, 2021-2023" Foreground="Gray" ></Label>
                 </Viewbox>
                 
             </StackPanel>
@@ -86,6 +108,7 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
                 <Viewbox Grid.Row="0">
@@ -94,7 +117,23 @@
                            Style="{StaticResource labelFusekle}"
                            />
                 </Viewbox>
-                
+
+                <DataGrid Grid.Row="1" Grid.RowSpan="8" x:Name="dataGridHighscores" AutoGenerateColumns="False" Height="Auto" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Top" 
+                  CanUserAddRows="False" CanUserDeleteRows="False" 
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                  ScrollViewer.CanContentScroll="True" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          Panel.ZIndex="100"
+                          Style="{StaticResource dataGrid}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{DynamicResource highOrder}" Binding="{Binding Order}" />
+                        <DataGridTextColumn Header="{DynamicResource highName}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="{DynamicResource highCount}" Binding="{Binding Count}" />
+                        <DataGridTextColumn Header="{DynamicResource highScore}" Binding="{Binding Score}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
                 <Viewbox Grid.Row="1">
                     <Label x:Name="labelNewGame" 
                            Content="{DynamicResource newGame}" 
@@ -145,6 +184,15 @@
                            MouseLeftButtonDown="labelResume_MouseLeftButtonDown"/>
                 </Viewbox>
                 <Viewbox Grid.Row="4">
+                    <Label x:Name="labelHighScores" 
+                           Content="{DynamicResource highscores}" 
+                           Style="{StaticResource labelMenu}"
+                           MouseEnter="labelDont_MouseEnter"
+                           MouseLeave="labelDont_MouseLeave"
+                           MouseLeftButtonDown="labelHighScores_MouseLeftButtonDown"/>  
+                </Viewbox>
+                
+                <Viewbox Grid.Row="5">
                     <Label x:Name="labelDont" 
                            Content="{DynamicResource dontTouch}" 
                            Style="{StaticResource labelMenu}"
@@ -152,7 +200,7 @@
                            MouseLeave="labelDont_MouseLeave"
                            MouseLeftButtonDown="labelDont_MouseLeftButtonDown"/>
                     </Viewbox>
-                <Viewbox Grid.Row="5">
+                <Viewbox Grid.Row="6">
                     <Label x:Name="labelLang" 
                        Content="{DynamicResource language}" 
                        Style="{StaticResource labelMenu}" 
@@ -161,7 +209,7 @@
                        MouseLeftButtonDown="labelLang_MouseLeftButtonDown"/>
                     </Viewbox>
 
-                <Grid Grid.Row="6" HorizontalAlignment="Center">
+                <Grid Grid.Row="7" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -185,7 +233,7 @@
                     </Viewbox>
                 </Grid>
                 
-                <Viewbox Grid.Row="7">
+                <Viewbox Grid.Row="8">
                     <Label x:Name="labelExit" 
                        Content="{DynamicResource exit}" 
                        Style="{StaticResource labelMenu}" 
@@ -202,6 +250,7 @@
             <Canvas x:Name="canvas">
             </Canvas>
         </Grid>
+        
 
     </Grid>
 </Window>

@@ -25,7 +25,17 @@ namespace Fusekle
             GoodStep,
             WrongStep,
             DontTouch,
-            WinApplause
+            WinApplause,
+            Dramatic1,
+            Dramatic2,
+            Dramatic3,
+            Epic1,
+            Epic2,
+            Epic3,
+            Epic4,
+            Relax1,
+            Relax2,
+            Relax3
         }
 
         static SoundPlayer()
@@ -86,6 +96,39 @@ namespace Fusekle
                     break;
                 case Sounds.WinApplause:
                     Open("Sounds\\winapplause.mp3");
+                    break;
+
+                case Sounds.Dramatic1:
+                    Open("Sounds\\GameplayMusic\\dramatic1.mp3");
+                    break;
+                case Sounds.Dramatic2:
+                    Open("Sounds\\GameplayMusic\\dramatic2.mp3");
+                    break;
+                case Sounds.Dramatic3:
+                    Open("Sounds\\GameplayMusic\\dramatic3.mp3");
+
+                    break;
+                case Sounds.Epic1:
+                    Open("Sounds\\GameplayMusic\\epic1.mp3");
+                    break;
+                case Sounds.Epic2:
+                    Open("Sounds\\GameplayMusic\\epic2.mp3");
+                    break;
+                case Sounds.Epic3:
+                    Open("Sounds\\GameplayMusic\\epic3.mp3");
+                    break;
+                case Sounds.Epic4:
+                    Open("Sounds\\GameplayMusic\\epic4.mp3");
+
+                    break;
+                case Sounds.Relax1:
+                    Open("Sounds\\GameplayMusic\\relax1.mp3");
+                    break;
+                case Sounds.Relax2:
+                    Open("Sounds\\GameplayMusic\\relax2.mp3");
+                    break;
+                case Sounds.Relax3:
+                    Open("Sounds\\GameplayMusic\\relax3.mp3");
                     break;
             }
 

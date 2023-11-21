@@ -4,14 +4,18 @@
     
     <system:String x:Key="newGame">Nova hra</system:String>
     <system:String x:Key="resume">Pokracovat</system:String>
+    <system:String x:Key="highscores">Nejvyssi skore</system:String>
     <system:String x:Key="dontTouch">Nesahat</system:String>
     <system:String x:Key="language">Jazyk</system:String>
     <system:String x:Key="exit">Konec</system:String>
 
     <system:String x:Key="fuskaPlus">Pridat</system:String>
     <system:String x:Key="fuskaMinus">Ubrat</system:String>
-    
-    
+
+    <system:String x:Key="highOrder">Poradi</system:String>
+    <system:String x:Key="highName">Jmeno</system:String>
+    <system:String x:Key="highCount">Fusek</system:String>
+    <system:String x:Key="highScore">Cas</system:String>
 
 
 </ResourceDictionary>

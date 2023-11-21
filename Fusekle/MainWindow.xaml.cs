@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using System.IO;
 
 namespace Fusekle
 {
@@ -28,6 +29,8 @@ namespace Fusekle
         {
             InitializeComponent();
         }
+
+        int WindowStatus = 0;
 
         List<Fuska> fusky = new List<Fuska>();
         List<Misto> mista = new List<Misto>();
@@ -46,10 +49,10 @@ namespace Fusekle
             
             SetItemCount(20);
 
-            ImageBrush ib = new ImageBrush();
-            ib.ImageSource = new BitmapImage(new Uri(@"Images\wallpaper.jpg", UriKind.Relative));
-            canvas.Background = ib;
+            
             canvas.Visibility = Visibility.Hidden;
+            dataGridHighscores.Visibility = Visibility.Hidden;
+            WindowStatus = 1;   
         }
 
         /// <summary>
@@ -70,6 +73,10 @@ namespace Fusekle
         /// <param name="itemCount">Number of socks pairs</param>
         private async void NewGame(int itemCount)
         {
+            WindowStatus = 3; 
+
+            SetWallpaper();
+
             fusky.Clear();
             mista.Clear();
             canvas.Children.Clear();
@@ -127,6 +134,8 @@ namespace Fusekle
             }
 
             canvas.Visibility = Visibility.Visible;
+
+            SoundPlayer.Play(SoundPlayer.Sounds.Dramatic1);
 
             CreateGameStats();
         }
@@ -240,6 +249,9 @@ namespace Fusekle
 
             Canvas.SetTop(myImage, (canvas.ActualHeight - myImageSource.Height) / 2);
             Canvas.SetLeft(myImage, (canvas.ActualWidth - myImageSource.Width) / 2);
+
+            File.AppendAllText("score.csv", $"\r\nAnonym,{itemCount},{labelGameTime.Content}");
+
         }
 
         private void SetItemCount(int add)
@@ -271,6 +283,51 @@ namespace Fusekle
             }
 
             labelItemCount.Content = itemCount;
+        }
+
+        private void SetWallpaper()
+        {
+            ImageBrush ib = new ImageBrush();
+
+            ib.ImageSource = new BitmapImage(new Uri($@"Images\wallpaper{GetRandom(1, 6).ToString()}.jpg", UriKind.Relative));
+            canvas.Background = ib;
+        }
+
+        private void LoadHighscores()
+        {
+            List<HighScoreItem> items = GetHighScores();
+            dataGridHighscores.ItemsSource = items;
+        }
+
+        private List<HighScoreItem> GetHighScores()
+        {
+            List<HighScoreItem> items = new List<HighScoreItem>();
+
+            if (File.Exists("score.csv"))
+            {
+                var scores = File.ReadLines("score.csv");
+                foreach (var line in scores)
+                    items.Add(new HighScoreItem { Order = "0", Name = line.Split(',')[0], Count = line.Split(',')[1], Score = line.Split(',')[2] });
+            }
+
+            var sortedItems = items.OrderBy(item => item.Score).ToList();
+
+            int i = 1;
+            foreach (var item in sortedItems)
+            {
+                item.Order = i.ToString();
+                i++;
+            }
+
+            return sortedItems;
+        }
+
+        private class HighScoreItem
+        {
+            public string Order { get; set; }
+            public string Name { get; set; }
+            public string Count { get; set; }
+            public string Score { get; set; }
         }
 
         #region Menu interaction
@@ -313,10 +370,14 @@ namespace Fusekle
 
         private void labelResume_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            gridMenu.Visibility = Visibility.Hidden;
-            SoundPlayer.Close();
-            canvas.Visibility = Visibility.Visible;
-            timerGame.Start();
+            if (WindowStatus == 1)
+            {
+                gridMenu.Visibility = Visibility.Hidden;
+                SoundPlayer.Close();
+                canvas.Visibility = Visibility.Visible;
+                timerGame.Start();
+                WindowStatus = 3;
+            }
         }
              
         private void labelLang_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -333,10 +394,22 @@ namespace Fusekle
         {
             if (e.Key == Key.Escape)
             {
-                gridMenu.Visibility = Visibility.Visible;
-                SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
-                canvas.Visibility = Visibility.Hidden;
-                timerGame.Stop();
+                if (WindowStatus == 3)
+                { 
+                    gridMenu.Visibility = Visibility.Visible;
+                    SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
+                    canvas.Visibility = Visibility.Hidden;
+                    timerGame.Stop();
+                    WindowStatus = 1;
+                }
+                if (WindowStatus == 2)
+                {
+                    gridMenu.Visibility = Visibility.Visible;
+                    SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
+                    canvas.Visibility = Visibility.Hidden;
+                    WindowStatus = 1;
+                    dataGridHighscores.Visibility = Visibility.Hidden;
+                }
             }
         }
 
@@ -379,6 +452,14 @@ namespace Fusekle
         private void labelItemMinus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             SetItemCount(-2);
+        }
+
+        private void labelHighScores_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            LoadHighscores();
+            dataGridHighscores.Visibility = Visibility.Visible;
+            WindowStatus = 2;
+
         }
     }
 }

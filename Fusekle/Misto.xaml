@@ -28,10 +28,10 @@
         </Style>
     </UserControl.Resources>
 
-    <Border BorderThickness="1" BorderBrush="Red">
+    <Border BorderThickness="0" BorderBrush="Red">
         <Grid x:Name="gridMain" Height="90" Width="50" Style="{StaticResource LowLight}">
             <Viewbox>
-                <Label x:Name="labelIndex" Content="dsfdsfdsfsdfdsfs" Grid.Row="0" Grid.Column="0" Foreground="Yellow"></Label>
+                <Label x:Name="labelIndex" Content="dsfdsfdsfsdfdsfs" Grid.Row="0" Grid.Column="0" Foreground="Yellow" Visibility="Hidden"></Label>
             </Viewbox>
         </Grid>
     </Border>
