@@ -27,6 +27,7 @@ namespace Fusekle
         public int StripesColor { get => stripesColor; }
 
         public event EventHandler EventFuskaPlaced;
+        public event EventHandler EventFuskaMisplaced;
         public event EventHandler EventRightClick;
 
         private Rect rect;
@@ -84,15 +85,13 @@ namespace Fusekle
                 engagedMisto.StripesColor = this.stripesColor;
                 Canvas.SetLeft(this, engagedMisto.rect.Left);
                 Canvas.SetTop(this, engagedMisto.rect.Top);
-                SoundPlayer.Play(SoundPlayer.Sounds.GoodStep);
                 EventFuskaPlaced?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                SoundPlayer.Play(SoundPlayer.Sounds.WrongStep);
-
                 Canvas.SetLeft(this, startPositionX);
                 Canvas.SetTop(this, startPositionY);
+                EventFuskaMisplaced?.Invoke(this, EventArgs.Empty);
             }
         }
 

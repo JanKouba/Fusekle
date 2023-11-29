@@ -39,16 +39,20 @@ namespace Fusekle
 
         int langCode = 1033;
 
+        SoundPlayer2 sndBackground;
+        SoundPlayer2 sndEffects;
+        double sndVolume = 0.5;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
-
-            //Init volume control
-            SoundPlayer.Volume += 100;
-            SoundPlayer.Volume -= 100;
+            //Init soundplayers and volume control
+            sndBackground = new SoundPlayer2(sndVolume);
+            sndEffects = new SoundPlayer2(sndVolume);
             
+            sndBackground.PlayBackgroundMusic(SoundBackground.MenuMusic);
+           
+            //Set default fuska count
             SetItemCount(20);
-
             
             canvas.Visibility = Visibility.Hidden;
             dataGridHighscores.Visibility = Visibility.Hidden;
@@ -123,26 +127,24 @@ namespace Fusekle
 
                     f.EventFuskaPlaced += FuskaPlaced;
                     f.EventRightClick += FuskaRightClick;
+                    f.EventFuskaMisplaced += FuskaMisplaced;
                 }
-
-
             }
 
             foreach (Fuska fuska in fusky)
-            {
                 Panel.SetZIndex(fuska, GetRandom(0, itemCount * 2));
-            }
 
             canvas.Visibility = Visibility.Visible;
 
-            SoundPlayer.Play(SoundPlayer.Sounds.Dramatic1);
+            sndBackground.PlayBackgroundMusic(SetBackgroundSound());
 
             CreateGameStats();
         }
-
+        
         private void FuskaRightClick(object sender, EventArgs e)
         {
-            Panel.SetZIndex((Fuska)sender, Panel.GetZIndex(((Fuska)sender))-1);
+            //Get another fuska on top
+            Panel.SetZIndex((Fuska)sender, Panel.GetZIndex(((Fuska)sender))-2);
         }
 
         private void TimerGame_Tick(object sender, EventArgs e)
@@ -190,8 +192,6 @@ namespace Fusekle
         DateTime dateTimeGame;
         DispatcherTimer timerGame;
         int fuskaLeft;
-        
-        
 
         /// <summary>
         /// Sets language by langCode (default = 1033)
@@ -220,9 +220,16 @@ namespace Fusekle
         private void FuskaPlaced(object sender, EventArgs e)
         {
             fuskaLeft = fusky.Count(obj => obj.Engaged == false);
+            
+            sndEffects.Play(SoundPlayer2.Sound.GoodStep);
 
             labelFuskaLeft.Content = fuskaLeft;
             DetectGameWin();
+        }
+
+        private void FuskaMisplaced(object sender, EventArgs e)
+        {
+            sndEffects.Play(SoundPlayer2.Sound.WrongStep);
         }
 
         private void DetectGameWin()
@@ -233,7 +240,7 @@ namespace Fusekle
 
         private void GameWin()
         {
-            SoundPlayer.Play(SoundPlayer.Sounds.WinApplause);
+            sndEffects.Play(SoundPlayer2.Sound.WinApplause);
             timerGame.Stop();
 
             Image myImage = new Image();
@@ -291,6 +298,27 @@ namespace Fusekle
 
             ib.ImageSource = new BitmapImage(new Uri($@"Images\wallpaper{GetRandom(1, 6).ToString()}.jpg", UriKind.Relative));
             canvas.Background = ib;
+        }
+
+        private SoundBackground SetBackgroundSound()
+        {
+            int rndSound = GetRandom(1, 3);
+
+            switch (rndSound) 
+            {
+                case 1:
+                    return SoundBackground.Dramatic;
+                    break;
+                case 2:
+                    return SoundBackground.Epic;
+                    break;
+                case 3:
+                    return SoundBackground.Relax;
+                    break;
+
+                default: return SoundBackground.Dramatic;
+                         
+            }
         }
 
         private void LoadHighscores()
@@ -357,15 +385,11 @@ namespace Fusekle
         {
             gridMenu.Visibility = Visibility.Hidden;
             NewGame(itemCount);
-            SoundPlayer.Play(SoundPlayer.Sounds.NewGame);
         }
 
         private void labelDont_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ((Label)sender).Style = Resources["labelMenuSelected"] as Style;
-            SoundPlayer.Play(SoundPlayer.Sounds.DontTouch);
-            System.Threading.Thread.Sleep(1000);
-            SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
+            sndEffects.Play(SoundPlayer2.Sound.DontTouch);
         }
 
         private void labelResume_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -373,7 +397,7 @@ namespace Fusekle
             if (WindowStatus == 1)
             {
                 gridMenu.Visibility = Visibility.Hidden;
-                SoundPlayer.Close();
+                sndBackground.PlayBackgroundMusic(SetBackgroundSound());
                 canvas.Visibility = Visibility.Visible;
                 timerGame.Start();
                 WindowStatus = 3;
@@ -395,17 +419,19 @@ namespace Fusekle
             if (e.Key == Key.Escape)
             {
                 if (WindowStatus == 3)
-                { 
+                {
+                    sndBackground.Stop();
                     gridMenu.Visibility = Visibility.Visible;
-                    SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
+                    sndBackground.PlayBackgroundMusic(SoundBackground.MenuMusic);
                     canvas.Visibility = Visibility.Hidden;
                     timerGame.Stop();
                     WindowStatus = 1;
                 }
                 if (WindowStatus == 2)
                 {
+                    sndBackground.Stop();   
                     gridMenu.Visibility = Visibility.Visible;
-                    SoundPlayer.Play(SoundPlayer.Sounds.MenuMusic);
+                    sndBackground.PlayBackgroundMusic(SoundBackground.MenuMusic);
                     canvas.Visibility = Visibility.Hidden;
                     WindowStatus = 1;
                     dataGridHighscores.Visibility = Visibility.Hidden;
@@ -434,14 +460,20 @@ namespace Fusekle
 
         private void labelVolPlus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (SoundPlayer.Volume < 1000)
-                SoundPlayer.Volume += 100;
+            if (sndVolume < 1)
+                sndVolume += 0.1;
+
+            sndBackground.Volume = sndVolume;
+            sndEffects.Volume = sndVolume;
         }
 
         private void labelVolMinus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (SoundPlayer.Volume > 0)
-                SoundPlayer.Volume -= 100;
+            if (sndVolume > 0)
+                sndVolume -= 0.1;
+
+            sndBackground.Volume = sndVolume;
+            sndEffects.Volume = sndVolume;
         }
 
         private void labelItemPlus_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
